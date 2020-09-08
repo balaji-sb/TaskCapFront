@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TaskCapFront</string>
+    <string name="rupee_symbol">&#8377;</string>
+    <string name="fetching">Fetching...</string>
+    <string name="retry">Retry</string>
+    <string name="try_again">Try Again</string>
+</resources>
