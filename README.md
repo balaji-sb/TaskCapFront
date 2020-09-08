@@ -16,6 +16,7 @@ Functionality Implementation :
    1. Design pages and items's height and width are based on reference document.
    2. Swipe Refresh API fetch implementation
    3. Internet Connection Check with retry option
+   4. Splash Screen page developed
 
 Note :
 1. Dummy logo, dummy placeholder used.
