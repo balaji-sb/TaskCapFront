@@ -1,11 +1,9 @@
 package com.pb.taskcapfront.view.activity.dashboard
 
 import android.view.View
-import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pb.taskcapfront.R
 import com.pb.taskcapfront.base.BaseActivity
@@ -14,6 +12,8 @@ import com.pb.taskcapfront.utils.PackageUtils
 import com.pb.taskcapfront.view.adapter.DashboardAdapter
 import com.pb.taskcapfront.viewmodel.dashboard.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.layout_no_network.*
+import kotlinx.android.synthetic.main.layout_recycler.*
 
 /**
  * Created by balaji on 7/9/20 10:09 PM
@@ -23,8 +23,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var mDashboardViewModel: DashboardViewModel
-    private var dashboardAdapter: DashboardAdapter? = null
-    private var linearLayoutManager: LinearLayoutManager? = null
+    private var mDashboardAdapter: DashboardAdapter? = null
 
     override fun getLayoutResource(): Int {
         return R.layout.activity_dashboard
@@ -36,30 +35,22 @@ class DashboardActivity : BaseActivity(), View.OnClickListener,
 
     override fun initValues() {
         mDashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
-        dashboardAdapter = DashboardAdapter(this)
-        linearLayoutManager = LinearLayoutManager(this)
     }
 
     override fun setupViews() {
-        val dashboardRecyclerView =
-            dashboardRecycler.findViewById<RecyclerView>(R.id.genericRecycler)
-        val btnRetry =
-            noNetworkLayout.findViewById<Button>(R.id.btnRetry)
         btnRetry.setOnClickListener(this)
         dashboardSwipeRefresh.setOnRefreshListener(this)
-        dashboardRecyclerView?.apply {
-            layoutManager = linearLayoutManager
-            adapter = dashboardAdapter
+        genericRecycler?.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = DashboardAdapter(this.context)
         }
         checkConnectionAndFetch()
-
     }
 
     private fun checkConnectionAndFetch() {
         if (isInternetConnected()) {
             noNetworkLayout.visibility = View.GONE
             dashboardRecycler.visibility = View.VISIBLE
-
             fetchApi()
         } else {
             noNetworkLayout.visibility = View.VISIBLE
@@ -83,7 +74,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener,
             if (this.isNotEmpty()) {
                 showProgressBar(false)
                 dashboardSwipeRefresh.isRefreshing = false
-                dashboardAdapter?.setContents(contentsList)
+                mDashboardAdapter?.setContents(contentsList)
             }
         }
     }
